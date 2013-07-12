@@ -21,36 +21,33 @@ package example;
 public class Test {
 	
     public static void main(String[] args)	{
-    	accuracyTest();
+    	testPerformanceAgainstStringArray();
     }
     public static void testPerformanceAgainstStringArray()	{
-    //	System.out.println("Length of an empty string= "+"".length());// its zero!
-    	/*
-    	String[] AddedWords = {"Boo!!","Hey","ooh","ook","rr","threeee","if only","12423423","Hello World","helloWorld",":::^&",":^:","Math.tan(x^y)"};
-    	String[] FakeWords = {"Hardy","Zynga","boo","Bo","oo","three","oorr","Hellor","mylowe","boot","opipdsccds","rrottentomatoe","wassupbrotha","6844==+","\"\"\"3423%6:::^&",":^:"};
-    	*/
     	String textFile = "MobyDick.txt";
-    	int numberOfAddedLines = 5000;
+    	int numberOfAddedLines = 7500;
     	
+    	System.out.println("This is a Test of Performance between the StringPhoneLattice object and String Arrays  ");
+    	System.out.println(" It tests how quickly each data structure can add words to its library,\n check if the ones that have been added have been added,\n and check if the ones that have not added have been added  ");
+    	System.out.println("All time measurements are given in milliseconds  ");
+    	System.out.println("The test will be parsing the words off of "+textFile+"  ");
+    	System.out.println("The test will now start  ");
     	TextIO.readFile("src/"+textFile);
     	String added = "";
-    	String fake = "";
+    	char uniqueCharacter = (char) 224;
     	for(int i=0;i<numberOfAddedLines;i++)	{
     		added+=" "+TextIO.getln().trim();
     	}
-    	for(int i=0;i<numberOfAddedLines;i++)	{
-    		fake+=" "+TextIO.getln();
-    	}
+    	
     	String[] AddedWords = added.split(" ");
-    	String[] FakeWords = fake.split(" ");
-    	System.out.println("This is a Test of Performance between the StringPhoneLattice object and String Arrays");
-    	System.out.println(" It tests how quickly each data structure can add words to its library,\n check if the ones that have been added have been added,\n and check if the ones that have not added have been added");
-    	System.out.println("All time measurements are given in milliseconds");
-    	System.out.println("The test will be parsing the words off of "+textFile);
-    	System.out.println("The test will now start");
-    	System.out.println("Done parsing words");
-    	System.out.println(AddedWords.length+" added words");
-    	System.out.println(FakeWords.length+" fake words");
+    	String[] FakeWords = new String[AddedWords.length];
+    	for(int i=0;i<FakeWords.length;i++)	{
+    		FakeWords[i] = uniqueCharacter+AddedWords[i];
+    	}
+
+    	System.out.println("Done parsing words  ");
+    	if(!added.contains(uniqueCharacter+"")) System.out.println("The character '"+uniqueCharacter+"' is not in any of the parsed words  ");
+    	System.out.println("**"+AddedWords.length+"** added words  ");
     	long startAddingL,stopAddingL,startAddedL,stopAddedL,startFakeL,stopFakeL,startAddingA,stopAddingA,startAddedA,stopAddedA,startFakeA,stopFakeA;
     	
     	startAddingL = System.currentTimeMillis();
@@ -59,24 +56,24 @@ public class Test {
     		root.addWord(word);
     	}
     	stopAddingL = System.currentTimeMillis();
-    	System.out.println("Time for Adding Words to Lattice:");
-    	System.out.println(stopAddingL-startAddingL);
+    	System.out.println("**Time for Adding Words to Lattice:**  ");
+    	System.out.println("*"+(stopAddingL-startAddingL)+"*  ");
     	
     	startAddedL = System.currentTimeMillis();
     	for(String word : AddedWords)	{
     		root.contains(word);
     	}
     	stopAddedL = System.currentTimeMillis();
-    	System.out.println("Time for Checking Added Words in Lattice:");
-    	System.out.println(stopAddedL-startAddedL);
+    	System.out.println("**Time for Checking Added Words in Lattice:**  ");
+    	System.out.println("*"+(stopAddedL-startAddedL)+"*  ");
     	
     	startFakeL = System.currentTimeMillis();
     	for(String word : FakeWords){
     		root.contains(word);
     	}
     	stopFakeL = System.currentTimeMillis();
-    	System.out.println("Time for Checking Fake Words in Lattice:");
-    	System.out.println(stopFakeL-startFakeL);
+    	System.out.println("**Time for Checking Fake Words in Lattice:**  ");
+    	System.out.println("*"+(stopFakeL-startFakeL)+"*  ");
     	
     	startAddingA = System.currentTimeMillis();
     	String[] AddedWords1 = new String[AddedWords.length];   	
@@ -84,8 +81,8 @@ public class Test {
     		AddedWords1[i] = AddedWords[i];
     	}
     	stopAddingA = System.currentTimeMillis();
-    	System.out.println("Time for Adding Words to Array:");
-    	System.out.println(stopAddingA-startAddingA);
+    	System.out.println("**Time for Adding Words to Array:**  ");
+    	System.out.println("*"+(stopAddingA-startAddingA)+"*  ");
     	
 
     	startAddedA = System.currentTimeMillis();
@@ -95,8 +92,8 @@ public class Test {
     		}
     	}
     	stopAddedA = System.currentTimeMillis();
-    	System.out.println("Time for Checking Added Words in Array:");
-    	System.out.println(stopAddedA-startAddedA);
+    	System.out.println("**Time for Checking Added Words in Array:**  ");
+    	System.out.println("*"+(stopAddedA-startAddedA)+"*  ");
     	
     	startFakeA = System.currentTimeMillis();
     	for(String word : AddedWords1)	{
@@ -105,8 +102,8 @@ public class Test {
     		}
     	}
     	stopFakeA = System.currentTimeMillis();
-    	System.out.println("Time for Checking Fake Words in Array:");
-    	System.out.println(stopFakeA-startFakeA);
+    	System.out.println("**Time for Checking Fake Words in Array:**  ");
+    	System.out.println("*"+(stopFakeA-startFakeA)+"*  ");
     	
     }
     
@@ -165,98 +162,130 @@ public class Test {
 }
 
 /*TEST PERFORMANCES
-----------------------------------------------------------------------------------------------------------------
-This is a Test of Performance between the StringPhoneLattice object and String Arrays
- It tests how quickly each data structure can add words to its library,
- check if the ones that have been added have been added,
- and check if the ones that have not added have been added
-All time measurements are given in milliseconds
-The test will be reading the words off of MobyDick.txt
-The test will now start
-Done parsing words
-282 added words
-413 fake words
-Time for Adding Words to Lattice:
-4
-Time for Checking Added Words in Lattice:
-3
-Time for Checking Fake Words in Lattice:
-2
-Time for Adding Words to Array:
-0
-Time for Checking Added Words in Array:
-12
-Time for Checking Fake Words in Array:
-14
-----------------------------------------------------------------------------------------------------------------
-This is a Test of Performance between the StringPhoneLattice object and String Arrays
- It tests how quickly each data structure can add words to its library,
- check if the ones that have been added have been added,
- and check if the ones that have not added have been added
-All time measurements are given in milliseconds
-The test will be reading the words off of MobyDick.txt
-The test will now start
-Done parsing words
-4613 added words
-5750 fake words
-Time for Adding Words to Lattice:
-88
-Time for Checking Added Words in Lattice:
-45
-Time for Checking Fake Words in Lattice:
-9
-Time for Adding Words to Array:
-0
-Time for Checking Added Words in Array:
-119
-Time for Checking Fake Words in Array:
-108
-----------------------------------------------------------------------------------------------------------------
-This is a Test of Performance between the StringPhoneLattice object and String Arrays
- It tests how quickly each data structure can add words to its library,
- check if the ones that have been added have been added,
- and check if the ones that have not added have been added
-All time measurements are given in milliseconds
-The test will be parsing the words off of MobyDick.txt
-The test will now start
-Done parsing words
-10362 added words
-11112 fake words
-Time for Adding Words to Lattice:
-201
-Time for Checking Added Words in Lattice:
-45
-Time for Checking Fake Words in Lattice:
-10
-Time for Adding Words to Array:
-1
-Time for Checking Added Words in Array:
-445
-Time for Checking Fake Words in Array:
-397
-----------------------------------------------------------------------------------------------------------------
-This is a Test of Performance between the StringPhoneLattice object and String Arrays
- It tests how quickly each data structure can add words to its library,
- check if the ones that have been added have been added,
- and check if the ones that have not added have been added
-All time measurements are given in milliseconds
-The test will be parsing the words off of MobyDick.txt
-The test will now start
-Done parsing words
-54421 added words
-56975 fake words
-Time for Adding Words to Lattice:
-248
-Time for Checking Added Words in Lattice:
-100
-Time for Checking Fake Words in Lattice:
-38
-Time for Adding Words to Array:
-3
-Time for Checking Added Words in Array:
-9179
-Time for Checking Fake Words in Array:
-10528
 
+Test 1
+----------------------------------------------------------------------------------------------------------------
+This is a Test of Performance between the StringPhoneLattice object and String Arrays  
+ It tests how quickly each data structure can add words to its library,
+ check if the ones that have been added have been added,
+ and check if the ones that have not added have been added  
+All time measurements are given in milliseconds  
+The test will be parsing the words off of MobyDick.txt  
+The test will now start  
+Done parsing words  
+The character 'à' is not in any of the parsed words  
+**251** added words  
+**Time for Adding Words to Lattice:**  
+*5*  
+**Time for Checking Added Words in Lattice:**  
+*3*  
+**Time for Checking Fake Words in Lattice:**  
+*3*  
+**Time for Adding Words to Array:**  
+*0*  
+**Time for Checking Added Words in Array:**  
+*21*  
+**Time for Checking Fake Words in Array:**  
+*8*  
+
+Test 2
+----------------------------------------------------------------------------------------------------------------
+This is a Test of Performance between the StringPhoneLattice object and String Arrays  
+ It tests how quickly each data structure can add words to its library,
+ check if the ones that have been added have been added,
+ and check if the ones that have not added have been added  
+All time measurements are given in milliseconds  
+The test will be parsing the words off of MobyDick.txt  
+The test will now start  
+Done parsing words  
+The character 'à' is not in any of the parsed words  
+**4401** added words  
+**Time for Adding Words to Lattice:**  
+*78*  
+**Time for Checking Added Words in Lattice:**  
+*40*  
+**Time for Checking Fake Words in Lattice:**  
+*6*  
+**Time for Adding Words to Array:**  
+*1*  
+**Time for Checking Added Words in Array:**  
+*83*  
+**Time for Checking Fake Words in Array:**  
+*84*  
+
+Test 3
+----------------------------------------------------------------------------------------------------------------
+This is a Test of Performance between the StringPhoneLattice object and String Arrays  
+ It tests how quickly each data structure can add words to its library,
+ check if the ones that have been added have been added,
+ and check if the ones that have not added have been added  
+All time measurements are given in milliseconds  
+The test will be parsing the words off of MobyDick.txt  
+The test will now start  
+Done parsing words  
+The character 'à' is not in any of the parsed words  
+**18861** added words  
+**Time for Adding Words to Lattice:**  
+*211*  
+**Time for Checking Added Words in Lattice:**  
+*76*  
+**Time for Checking Fake Words in Lattice:**  
+*14*  
+**Time for Adding Words to Array:**  
+*1*  
+**Time for Checking Added Words in Array:**  
+*1625*  
+**Time for Checking Fake Words in Array:**  
+*1673*  
+
+Test 4  
+----------------------------------------------------------------------------------------------------------------
+This is a Test of Performance between the StringPhoneLattice object and String Arrays  
+ It tests how quickly each data structure can add words to its library,
+ check if the ones that have been added have been added,
+ and check if the ones that have not added have been added  
+All time measurements are given in milliseconds  
+The test will be parsing the words off of MobyDick.txt  
+The test will now start  
+Done parsing words  
+The character 'à' is not in any of the parsed words  
+**47839** added words  
+**Time for Adding Words to Lattice:**  
+*240*  
+**Time for Checking Added Words in Lattice:**  
+*109*  
+**Time for Checking Fake Words in Lattice:**  
+*25*  
+**Time for Adding Words to Array:**  
+*3*  
+**Time for Checking Added Words in Array:**  
+*8010*  
+**Time for Checking Fake Words in Array:**  
+*8954*  
+
+Test 5
+----------------------------------------------------------------------------------------------------------------
+This is a Test of Performance between the StringPhoneLattice object and String Arrays  
+ It tests how quickly each data structure can add words to its library,
+ check if the ones that have been added have been added,
+ and check if the ones that have not added have been added  
+All time measurements are given in milliseconds  
+The test will be parsing the words off of MobyDick.txt  
+The test will now start  
+Done parsing words  
+The character 'à' is not in any of the parsed words  
+**73111** added words  
+**Time for Adding Words to Lattice:**  
+*269*  
+**Time for Checking Added Words in Lattice:**  
+*103*  
+**Time for Checking Fake Words in Lattice:**  
+*42*  
+**Time for Adding Words to Array:**  
+*5*  
+**Time for Checking Added Words in Array:**  
+*18756*  
+**Time for Checking Fake Words in Array:**  
+*20789*  
 ----------------------------------------------------------------------------------------------------------------
 */
