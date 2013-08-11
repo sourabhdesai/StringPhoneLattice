@@ -1,8 +1,4 @@
 package example;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 /**
  * Created with IntelliJ IDEA.
  * User: DESAI_628IL
@@ -11,42 +7,23 @@ import org.json.simple.JSONObject;
  * To change this template use File | Settings | File Templates.
  */
 
-public class StringPhoneLattice {
-	//Have to keep JSON tags it short to minimize data size
-	public static final String VALUE = "v"; 
-	public static final String LEAVES = "l";
-	
+public class JSONStringPhoneLattice {
     private char aChar;
-    private StringPhoneLattice[] nexts;
+    private JSONStringPhoneLattice[] nexts;
 
-    public StringPhoneLattice ()	{
+    public JSONStringPhoneLattice ()	{
         this.aChar = ' ';
-        this.nexts = new StringPhoneLattice[0]; 
+        this.nexts = new JSONStringPhoneLattice[0]; 
     }
 
-    private StringPhoneLattice (String str)  {
+    private JSONStringPhoneLattice (String str)  {
         if(str.length()==1) {
             this.aChar = str.charAt(0);
-            this.nexts = new StringPhoneLattice[0];
+            this.nexts = new JSONStringPhoneLattice[0];
             return;
         }
         this.aChar = str.charAt(0);
-        this.nexts =new StringPhoneLattice[] {new StringPhoneLattice(str.substring(1))};
-    }
-    
-    public StringPhoneLattice(JSONObject json)	{
-    	if(json==null)	{
-    		this.aChar = ' ';
-    		this.nexts = new StringPhoneLattice[0];
-    		return;
-    	}
-    	this.aChar = ((String) json.get(VALUE)).charAt(0);
-    	JSONArray  leaves= (JSONArray) json.get(LEAVES);
-    	this.nexts = new StringPhoneLattice[leaves.size()];
-    	if(this.nexts.length!=0)
-	    	for(int i=0;i<this.nexts.length;i++)	{
-	    		this.nexts[i] = new StringPhoneLattice((JSONObject) leaves.get(i));
-	    	}
+        this.nexts =new JSONStringPhoneLattice[] {new JSONStringPhoneLattice(str.substring(1))};
     }
 
     /**
@@ -60,60 +37,60 @@ public class StringPhoneLattice {
         this.addWordRecursive(firstCharsMatch?str.substring(1):str, firstCharsMatch,this);
     }
 
-    private void addWordRecursive(String key, boolean foundThread,StringPhoneLattice root)  {
+    private void addWordRecursive(String key, boolean foundThread,JSONStringPhoneLattice root)  {
         //A base case! It reached the end of a thread so it needs to extend it by however much it has to
         if(this.nexts.length==0)    {
-            this.nexts = new StringPhoneLattice[] {new StringPhoneLattice(key)};
+            this.nexts = new JSONStringPhoneLattice[] {new JSONStringPhoneLattice(key)};
             return;
         }
         char currentChar = key.charAt(0);
         //A base case! The string is now only one letter so all there is left to do is see if the single char in it is already a value in one of the leaves. If not, must create a new leaf with its single char in it!
         if(key.length()==1) {
             //At this point, the following for loop checks if the word has been added previously.Will return if it has!
-            for(StringPhoneLattice lattice : this.nexts)    {
+            for(JSONStringPhoneLattice lattice : this.nexts)    {
                 if(lattice.aChar == currentChar)    {
                     return;
                 }
             }
-            this.addNewLatticeToNexts(new StringPhoneLattice(key));
+            this.addNewLatticeToNexts(new JSONStringPhoneLattice(key));
             return;
         }
         if(foundThread) {
-            for(StringPhoneLattice lattice : this.nexts)    {
+            for(JSONStringPhoneLattice lattice : this.nexts)    {
                 if(lattice.aChar == currentChar)    {
                     lattice.addWordRecursive(key.substring(1),true,root);
                     return;
                 }
             }
-            this.addNewLatticeToNexts(new StringPhoneLattice(key));
+            this.addNewLatticeToNexts(new JSONStringPhoneLattice(key));
             return;
         } else  {
-            for(StringPhoneLattice lattice : this.nexts)    {
-                StringPhoneLattice childLattice = lattice.getChildContainingChar(currentChar);
+            for(JSONStringPhoneLattice lattice : this.nexts)    {
+                JSONStringPhoneLattice childLattice = lattice.getChildContainingChar(currentChar);
                 if(childLattice != null) {
                     childLattice.addWordRecursive(key.substring(1),true,root);
                     return;
                 }
             }
-            root.addNewLatticeToNexts(new StringPhoneLattice(key));
+            root.addNewLatticeToNexts(new JSONStringPhoneLattice(key));
             return;
         }
     }
 
-    private StringPhoneLattice getChildContainingChar(char c)    {
+    private JSONStringPhoneLattice getChildContainingChar(char c)    {
         if(this.nexts.length == 0) return null;
         if(this.aChar == c) return this;
-        for(StringPhoneLattice lattice : this.nexts)    {
+        for(JSONStringPhoneLattice lattice : this.nexts)    {
             if(lattice.getChildContainingChar(c) != null) return lattice;
         }
         return null;
     }
 
-    private StringPhoneLattice getClosestLeafChild()  {
+    private JSONStringPhoneLattice getClosestLeafChild()  {
         if(this.nexts.length==0) return this;
-        StringPhoneLattice childWithLeastChildren = this.nexts[0];
+        JSONStringPhoneLattice childWithLeastChildren = this.nexts[0];
         int minimumChildren = this.nexts[0].nexts.length;
-        for(StringPhoneLattice lattice : this.nexts)    {
+        for(JSONStringPhoneLattice lattice : this.nexts)    {
             if (lattice.nexts.length<minimumChildren) {
                 childWithLeastChildren = lattice;
                 minimumChildren = lattice.nexts.length;
@@ -122,8 +99,8 @@ public class StringPhoneLattice {
         return childWithLeastChildren.getClosestLeafChild();
     }
 
-    private void addNewLatticeToNexts(StringPhoneLattice newNext)  {
-        StringPhoneLattice[] newNexts = new StringPhoneLattice[this.nexts.length+1];
+    private void addNewLatticeToNexts(JSONStringPhoneLattice newNext)  {
+        JSONStringPhoneLattice[] newNexts = new JSONStringPhoneLattice[this.nexts.length+1];
         for(int i=0;i<this.nexts.length;i++)  {
             newNexts[i] = this.nexts[i];
         }
@@ -147,13 +124,13 @@ public class StringPhoneLattice {
             return false;
         }
         if(key.length()==1)	{
-            for(StringPhoneLattice lattice : this.nexts)	{
+            for(JSONStringPhoneLattice lattice : this.nexts)	{
                 if(lattice.aChar == currentChar) return true;
             }
             return false;
         }
         if(foundThread)  {
-            for(StringPhoneLattice lattice : this.nexts)    {
+            for(JSONStringPhoneLattice lattice : this.nexts)    {
                 if(lattice.aChar == currentChar)  {
                     return lattice.containsRecursive(key.substring(1),true);
                 }
@@ -162,37 +139,20 @@ public class StringPhoneLattice {
             return false;
         } else   {
             //Still searching for a matching char
-            for(StringPhoneLattice lattice : this.nexts) {
+            for(JSONStringPhoneLattice lattice : this.nexts) {
                 //Finally found the thread (maybe...)
                 if(lattice.aChar == currentChar) {
                     return lattice.containsRecursive(key.substring(1),true);
                 }
             }
             //Still didnt find the thread!
-            for(StringPhoneLattice lattice : this.nexts) {
+            for(JSONStringPhoneLattice lattice : this.nexts) {
                 //If the recursive calls on the lattice leaf gives us a true value, then return true! else, continue on to the next leaf available
                 if(lattice.containsRecursive(key,false)) return true;
             }
             //none of the recursive calls on the leaves gave us a true value! The word was not found anywhere in the tree :(
             return false;
         }
-    }
-    
-    public JSONObject toJSON()	{
-    	if(this.nexts.length==0)	{
-    		JSONObject jsonObj = new JSONObject();
-    		jsonObj.put(VALUE, this.aChar+"");
-    		jsonObj.put(LEAVES, new JSONArray());
-    		return jsonObj;
-    	}
-    	JSONObject jsonObj = new JSONObject();
-    	jsonObj.put(VALUE, this.aChar+"");
-    	JSONArray leaves = new JSONArray();
-    	for(StringPhoneLattice lattice: this.nexts)	{
-    		leaves.add(lattice.toJSON());
-    	}
-    	jsonObj.put(LEAVES,leaves);
-    	return jsonObj;
     }
 
 

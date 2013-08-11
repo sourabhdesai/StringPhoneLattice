@@ -18,14 +18,18 @@ under the License.
 */
 package example;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
 public class Test {
 	
     public static void main(String[] args)	{
-    	testPerformanceAgainstStringArray();
+    	testJSON();
     }
     public static void testPerformanceAgainstStringArray()	{
     	String textFile = "MobyDick.txt";
-    	int numberOfAddedLines = 7500;
+    	int numberOfAddedLines = 5000;
     	
     	System.out.println("This is a Test of Performance between the StringPhoneLattice object and String Arrays  ");
     	System.out.println(" It tests how quickly each data structure can add words to its library,\n check if the ones that have been added have been added,\n and check if the ones that have not added have been added  ");
@@ -58,7 +62,6 @@ public class Test {
     	stopAddingL = System.currentTimeMillis();
     	System.out.println("**Time for Adding Words to Lattice:**  ");
     	System.out.println("*"+(stopAddingL-startAddingL)+"*  ");
-    	
     	startAddedL = System.currentTimeMillis();
     	for(String word : AddedWords)	{
     		root.contains(word);
@@ -66,7 +69,6 @@ public class Test {
     	stopAddedL = System.currentTimeMillis();
     	System.out.println("**Time for Checking Added Words in Lattice:**  ");
     	System.out.println("*"+(stopAddedL-startAddedL)+"*  ");
-    	
     	startFakeL = System.currentTimeMillis();
     	for(String word : FakeWords){
     		root.contains(word);
@@ -157,6 +159,70 @@ public class Test {
     	}   	
     	System.out.println("Probability of returning false when it should return false = "+(100*(correctResponsesForTest2/numberOfWords))+"%");
     	}else System.out.println("Could not find unique character that was not in words parsed from "+fileName);
+    }
+    
+    public static void testJSON()	{
+    	String textFile = "MobyDick.txt";
+    	int numberOfAddedLines = 8000;
+    	
+    	System.out.println("This is a Test for the efficiency and accuracy of JSON encoding and decoding of the String Phone Lattice data structure");
+    	System.out.println(" It tests how quickly a String Phone Lattice data structure can encode its contents into a JSON object,\n How quickly it can decode a JSON object resembling a String Phone Lattice data structure,\n and how accurately it can decode those JSON objects  ");
+    	System.out.print("As a bonus, it will also be testing the speed in which the JSONObjects from the JSON Simple library can be converted to and from String objects");
+    	System.out.println("All time measurements are given in milliseconds  ");
+    	System.out.println("The test will be parsing the words off of "+textFile+"  ");
+    	System.out.println("The test will now start  ");
+    	TextIO.readFile("src/"+textFile);
+    	String added = "";
+    	for(int i=0;i<numberOfAddedLines;i++)	{
+    		added+=" "+TextIO.getln().trim();
+    	}
+    	
+    	String[] AddedWords = added.split(" ");
+
+    	System.out.println("Done parsing words  ");
+    	System.out.println("**"+AddedWords.length+"** added words  ");
+
+    	StringPhoneLattice root = new StringPhoneLattice();   	
+    	for(String word : AddedWords)	{
+    		root.addWord(word);
+    	}
+    	
+    	long startEncode,endEncode,startString,endString,startJSON,endJSON,startDecode,endDecode;
+    	startEncode = System.currentTimeMillis();
+    	JSONObject json = root.toJSON();
+    	endEncode = System.currentTimeMillis();
+    	System.out.println("Time to encode to JSON:  ");
+    	System.out.println("*"+(endEncode-startEncode)+"*  ");
+    	
+    	startString = System.currentTimeMillis();
+    	String stringJSON = json.toJSONString();
+    	endString = System.currentTimeMillis();
+    	System.out.println("Time to encode to JSON Object to String object:  ");
+    	System.out.println("*"+(endString-startString)+"*  ");
+    	
+    	startJSON = System.currentTimeMillis();
+    	JSONObject json1 = (JSONObject) JSONValue.parse(stringJSON); //This is null!
+    	endJSON = System.currentTimeMillis();
+    	System.out.println("Time to encode to String Object to JSON object:  ");
+    	System.out.println("*"+(endJSON-startJSON)+"*  ");
+
+    	
+    	startDecode = System.currentTimeMillis();
+    	StringPhoneLattice root1 = new StringPhoneLattice(json1);
+    	endDecode = System.currentTimeMillis();
+    	System.out.println("Time to encode to JSON Object to StringPhoneLattice object:  ");
+    	System.out.println("*"+(endDecode-startDecode)+"*  ");
+    	
+    	if(root1.toJSON().toJSONString().equals(stringJSON)) {
+    		System.out.println("JSON Encoding and decoding of StringPhoneLattice data structure is completely accurate  ");
+    	//	System.out.println(root1.toJSON().toJSONString());
+    	} else {
+    		System.out.println("JSON Encoding and decoding of StringPhoneLattice data structure is inaccurate  ");
+    		System.out.println("Here is the original JSON output:  ");
+    		System.out.println(json.toJSONString()+ "  ");
+    		System.out.println("Here is the JSON output after conversions:  ");
+    		System.out.println(root1.toJSON().toJSONString()+ "  ");
+    	}
     }
 
 }
