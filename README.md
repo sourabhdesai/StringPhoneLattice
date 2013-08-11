@@ -1,6 +1,9 @@
 StringPhoneLattice
 ==================
 
+Please note that this data structure **requires** the [JSON Simple library](https://code.google.com/p/json-simple/) for JSON serialization.
+If you want to use a different JSON parsing library, It should be fairly easy to do so by just modifying the code within the `StringPhoneLattice` class.  
+
 A Phone Lattice data structure written in Java that allows to quickly check if a String has been added to the database.
 
 
@@ -15,7 +18,7 @@ It can be used in any scenario where you need to check if a String has been adde
   *- Small size:*  
       All you need to do is add StringPhoneLattice.java to your source files!
   *- JSON Serialization  
-      Can easily be Encoded into a `JSONObject` within the JSON Simple library using the `toJSON()` method and JSON copy constructor
+      Can easily be Encoded into a `JSONObject` within the JSON Simple library using the `toJSON()` method and the JSON copy constructor
       
   
 **Cons:**
@@ -23,6 +26,7 @@ It can be used in any scenario where you need to check if a String has been adde
   *- Takes longer than arrays to add words to its data set*  
   *- Does not accept empty strings*  
   *- Cannot retrieve Strings from the StringPhoneLattice, only check that they are there*   
+  *- Dependent on JSON Simple library for JSON serialization*  
   
 Certainly, this is not be the ideal data structure to use in all scenarios. It is only meant for very specific scenarios   where one needs to quickly check if a String has been added into a pool of Strings.
 
@@ -43,7 +47,7 @@ All time measurements are given in milliseconds
 The test will be parsing the words off of MobyDick.txt  
 The test will now start  
 Done parsing words  
-The character 'à' is not in any of the parsed words  
+The character 'ï¿½' is not in any of the parsed words  
 **251** added words  
 **Time for Adding Words to Lattice:**  
 *5*  
@@ -68,7 +72,7 @@ All time measurements are given in milliseconds
 The test will be parsing the words off of MobyDick.txt  
 The test will now start  
 Done parsing words  
-The character 'à' is not in any of the parsed words  
+The character 'ï¿½' is not in any of the parsed words  
 **4401** added words  
 **Time for Adding Words to Lattice:**  
 *78*  
@@ -93,7 +97,7 @@ All time measurements are given in milliseconds
 The test will be parsing the words off of MobyDick.txt  
 The test will now start  
 Done parsing words  
-The character 'à' is not in any of the parsed words  
+The character 'ï¿½' is not in any of the parsed words  
 **18861** added words  
 **Time for Adding Words to Lattice:**  
 *211*  
@@ -118,7 +122,7 @@ All time measurements are given in milliseconds
 The test will be parsing the words off of MobyDick.txt  
 The test will now start  
 Done parsing words  
-The character 'à' is not in any of the parsed words  
+The character 'ï¿½' is not in any of the parsed words  
 **47839** added words  
 **Time for Adding Words to Lattice:**  
 *240*  
@@ -143,7 +147,7 @@ All time measurements are given in milliseconds
 The test will be parsing the words off of MobyDick.txt  
 The test will now start  
 Done parsing words  
-The character 'à' is not in any of the parsed words  
+The character 'ï¿½' is not in any of the parsed words  
 **73111** added words  
 **Time for Adding Words to Lattice:**  
 *269*  
