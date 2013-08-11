@@ -11,22 +11,22 @@ It can be used in any scenario where you need to check if a String has been adde
 
 **Pros:**
   
-  *- Quick:*  
+  - *Quick:*  
       When it comes to checking if a word is in the data structure, it excels.  
-  *- Easy to use:*  
+  - *Easy to use:*  
       Only two public instance method `addWord(String str)` and `contains(String str)` and a simple constructor  
-  *- Small size:*  
+  - *Small size:*  
       All you need to do is add StringPhoneLattice.java to your source files!
-  *- JSON Serialization  
+  - *JSON Serialization*    
       Can easily be Encoded into a `JSONObject` within the JSON Simple library using the `toJSON()` method and the JSON copy constructor
       
   
 **Cons:**
   
-  *- Takes longer than arrays to add words to its data set*  
-  *- Does not accept empty strings*  
-  *- Cannot retrieve Strings from the StringPhoneLattice, only check that they are there*   
-  *- Dependent on JSON Simple library for JSON serialization*  
+  - *Takes longer than arrays to add words to its data set*  
+  - *Does not accept empty strings*  
+  - *Cannot retrieve Strings from the StringPhoneLattice, only check that they are there*   
+  - *Dependent on JSON Simple library for JSON serialization*  
   
 Certainly, this is not be the ideal data structure to use in all scenarios. It is only meant for very specific scenarios   where one needs to quickly check if a String has been added into a pool of Strings.
 
